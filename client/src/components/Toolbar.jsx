@@ -1,14 +1,14 @@
-/**
- * Toolbar.jsx — search input, language + tag filters, "+ New" button,
- * and a live snippet count. Presentational only; reports changes upward.
- */
+const DEFAULT_LANGUAGES = ['javascript', 'python', 'css', 'sql', 'typescript', 'bash'];
+
 export default function Toolbar({
   q, onQ, language, onLanguage, tag, onTag, meta, count, onNew
 }) {
+  const languages = meta.languages.length > 0 ? meta.languages : DEFAULT_LANGUAGES;
+
   const field =
-    'h-9 rounded-lg border border-edge bg-panel px-3 text-[13px] ' +
-    'text-text placeholder:text-soft transition-colors duration-[120ms] ' +
-    'focus:border-mint focus:outline-none';
+    'h-9 rounded-lg border border-[var(--edge)] bg-[var(--panel)] px-3 text-[13px] ' +
+    'text-[var(--text)] placeholder:text-[var(--soft)] transition-colors duration-[120ms] ' +
+    'focus:border-[var(--mint)] focus:outline-none';
 
   return (
     <div>
@@ -28,7 +28,7 @@ export default function Toolbar({
           className={field}
         >
           <option value="">All languages</option>
-          {meta.languages.map((l) => (
+          {languages.map((l) => (
             <option key={l} value={l}>{l}</option>
           ))}
         </select>
@@ -45,15 +45,20 @@ export default function Toolbar({
         </select>
         <button
           onClick={onNew}
-          className="h-9 rounded-lg bg-mint px-4 text-[13px] font-semibold
-                     text-mintInk transition-transform duration-[120ms]
-                     active:scale-[.98]"
+          className="h-9 rounded-lg bg-[var(--mint)] px-4 text-[13px] font-semibold
+                     text-[var(--mintInk)] transition-transform duration-[120ms]
+                     active:scale-[.98] hover:opacity-90"
         >
           + New snippet
         </button>
       </div>
-      <p className="mt-2 text-xs text-soft">
+      <p className="mt-2 text-xs text-[var(--soft)]">
         {count} snippet{count === 1 ? '' : 's'}
+        {meta.languages.length === 0 && count === 0 && (
+          <span className="ml-2 text-[var(--mint)]">
+            ← add your first snippet to get started
+          </span>
+        )}
       </p>
     </div>
   );
