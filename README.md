@@ -6,7 +6,7 @@
 
 A personal code-snippet manager built with **React 18 + Vite** on the front-end and **Node.js + Express + PostgreSQL** on the back-end. Fully responsive, deployed for free on Vercel + Render + Neon.
 
-**Live app:** https://snippet-server-eight.vercel.app  
+**Live app:** https://snippet-client.vercel.app
 **Course:** DLBCSPJWD01 — Project Java and Web Development  
 **Student:** Kanika Choudhary · 92017730
 
