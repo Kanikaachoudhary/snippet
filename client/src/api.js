@@ -1,15 +1,3 @@
-/**
- * api.js
- * ------
- * Every call to the back-end lives here. This is the ONLY place the
- * front-end talks to the server; the browser never touches the database.
- *
- * In development the Vite dev server proxies /api to the local back-end.
- * In production (Vercel build) we point at the deployed back-end URL via
- * the VITE_API_URL environment variable, e.g.
- *     VITE_API_URL=https://snipp-api.onrender.com
- */
-
 const BASE = (import.meta.env.VITE_API_URL || '') + '/api';
 
 async function handle(res) {
@@ -28,24 +16,26 @@ export const api = {
     const qs = p.toString();
     return fetch(`${BASE}/snippets${qs ? `?${qs}` : ''}`).then(handle);
   },
-  meta() {
-    return fetch(`${BASE}/meta`).then(handle);
-  },
+  meta() { return fetch(`${BASE}/meta`).then(handle); },
   create(snippet) {
     return fetch(`${BASE}/snippets`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(snippet)
     }).then(handle);
   },
   update(id, snippet) {
     return fetch(`${BASE}/snippets/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'PUT', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(snippet)
     }).then(handle);
   },
   remove(id) {
     return fetch(`${BASE}/snippets/${id}`, { method: 'DELETE' }).then(handle);
+  },
+  toggleFavourite(id) {
+    return fetch(`${BASE}/snippets/${id}/favourite`, { method: 'POST' }).then(handle);
+  },
+  duplicate(id) {
+    return fetch(`${BASE}/snippets/${id}/duplicate`, { method: 'POST' }).then(handle);
   }
 };
