@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import hljs from 'highlight.js/lib/common';
 
-export default function SnippetCard({ snippet, onEdit, onDelete }) {
+export default function SnippetCard({ snippet, onEdit, onDelete, onFavourite, onDuplicate }) {
   const codeRef = useRef(null);
   const [copied, setCopied] = useState(false);
 
@@ -30,60 +30,72 @@ export default function SnippetCard({ snippet, onEdit, onDelete }) {
   const langColor = langColors[snippet.language?.toLowerCase()] || 'var(--mint)';
 
   return (
-    <article className="overflow-hidden rounded-xl border transition-colors duration-200"
-      style={{ borderColor:'var(--edge)', background:'var(--panel)',
-               boxShadow:'0 1px 3px rgba(0,0,0,.15)' }}>
+    <article className="overflow-hidden rounded-xl border transition-all duration-200"
+      style={{
+        borderColor: snippet.favourite ? 'var(--mint)' : 'var(--edge)',
+        background: 'var(--panel)',
+        boxShadow: snippet.favourite
+          ? '0 0 0 1px var(--mint), 0 2px 8px rgba(45,212,191,.08)'
+          : '0 1px 3px rgba(0,0,0,.15)'
+      }}>
 
-      <div className="flex items-center gap-2 px-3 py-2.5"
-           style={{ background:'var(--win)' }}>
-        <span className="h-3 w-3 rounded-full" style={{ background:'#FF5F56' }} />
-        <span className="h-3 w-3 rounded-full" style={{ background:'#FFBD2E' }} />
-        <span className="h-3 w-3 rounded-full" style={{ background:'#27C93F' }} />
-        <span className="ml-2 flex-1 truncate text-[12.5px] font-semibold"
-              style={{ color:'var(--text)' }}>
+      <div className="flex items-center gap-2 px-3 py-2.5" style={{ background: 'var(--win)' }}>
+        <span className="h-3 w-3 rounded-full" style={{ background: '#FF5F56' }} />
+        <span className="h-3 w-3 rounded-full" style={{ background: '#FFBD2E' }} />
+        <span className="h-3 w-3 rounded-full" style={{ background: '#27C93F' }} />
+        <span className="ml-2 flex-1 truncate text-[12.5px] font-semibold" style={{ color: 'var(--text)' }}>
           {snippet.title}
         </span>
-        <span className="rounded px-2 py-0.5 text-[11px] font-semibold"
-              style={{ background:`${langColor}20`, color:langColor }}>
+        <button onClick={() => onFavourite(snippet)}
+          className="text-[16px] leading-none transition-transform duration-150 hover:scale-110"
+          style={{ color: snippet.favourite ? '#f59e0b' : 'var(--edge)' }}>
+          {snippet.favourite ? '★' : '☆'}
+        </button>
+        <span className="rounded px-2 py-0.5 text-[11px] font-semibold ml-1"
+              style={{ background: `${langColor}20`, color: langColor }}>
           {snippet.language}
         </span>
       </div>
 
-      <pre className="overflow-x-auto px-4 py-3" style={{ background:'var(--win)' }}>
-        <code ref={codeRef}
-          className={`language-${snippet.language} hljs`}
-          style={{ fontSize:'12.5px', lineHeight:1.6 }} />
+      <pre className="overflow-x-auto px-4 py-3" style={{ background: 'var(--win)' }}>
+        <code ref={codeRef} className={`language-${snippet.language} hljs`}
+          style={{ fontSize: '12.5px', lineHeight: 1.6 }} />
       </pre>
 
       {snippet.tags?.length > 0 && (
         <div className="flex flex-wrap gap-2 px-4 pt-2">
           {snippet.tags.map((t) => (
             <span key={t} className="rounded-full px-2 py-0.5 text-[11px]"
-              style={{ background:'var(--win)', color:'var(--soft)',
-                       border:'1px solid var(--edge)' }}>
+              style={{ background: 'var(--win)', color: 'var(--soft)', border: '1px solid var(--edge)' }}>
               #{t}
             </span>
           ))}
         </div>
       )}
 
-      <div className="mt-2 flex items-center gap-2 border-t px-4 py-3"
-           style={{ borderColor:'var(--edge)' }}>
+      <div className="mt-2 flex items-center gap-2 border-t px-4 py-3" style={{ borderColor: 'var(--edge)' }}>
         <button onClick={copy}
           className="rounded-md px-2.5 py-1 text-[11.5px] font-semibold transition-all duration-[120ms]"
-          style={{ border:'1px solid var(--mint)',
-                   color: copied ? 'var(--mintInk)' : 'var(--mint)',
-                   background: copied ? 'var(--mint)' : 'transparent' }}>
+          style={{
+            border: '1px solid var(--mint)',
+            color: copied ? 'var(--mintInk)' : 'var(--mint)',
+            background: copied ? 'var(--mint)' : 'transparent'
+          }}>
           {copied ? 'Copied ✓' : 'Copy'}
+        </button>
+        <button onClick={() => onDuplicate(snippet)}
+          className="rounded-md px-2.5 py-1 text-[11.5px] transition-colors duration-[120ms]"
+          style={{ border: '1px solid var(--edge)', color: 'var(--soft)' }}>
+          Duplicate
         </button>
         <button onClick={() => onEdit(snippet)}
           className="rounded-md px-2.5 py-1 text-[11.5px] transition-colors duration-[120ms]"
-          style={{ border:'1px solid var(--edge)', color:'var(--soft)' }}>
+          style={{ border: '1px solid var(--edge)', color: 'var(--soft)' }}>
           Edit
         </button>
         <button onClick={() => onDelete(snippet)}
           className="ml-auto rounded-md px-2.5 py-1 text-[11.5px] transition-colors duration-[120ms]"
-          style={{ border:'1px solid var(--edge)', color:'var(--soft)' }}>
+          style={{ border: '1px solid var(--edge)', color: 'var(--soft)' }}>
           Delete
         </button>
       </div>
