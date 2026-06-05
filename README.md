@@ -1,4 +1,3 @@
-```markdown
 # Snipp </>
 
 A personal code snippet manager I built for my Java and Web Development course. You can save, tag, search and copy reusable code snippets.
@@ -52,11 +51,8 @@ npm install
 ### 3. Set up environment variables
 
 Create `server/.env` and add your database URL:
-
-```
 DATABASE_URL=postgresql://user:password@host/dbname?sslmode=require
 PORT=3001
-```
 
 You can get a free Postgres database at https://neon.tech
 
@@ -102,8 +98,6 @@ Tests are in `server/snippets.test.js` and cover the `filterSnippets()` and `nor
 ---
 
 ## Project structure
-
-```
 snipp/
 ├── server/
 │   ├── index.js          Express app and routes
@@ -112,11 +106,10 @@ snipp/
 │   ├── db.js             database connection
 │   └── seed.js           demo data
 └── client/
-    └── src/
-        ├── App.jsx
-        ├── api.js
-        └── components/
-```
+└── src/
+├── App.jsx
+├── api.js
+└── components/
 
 ---
 
@@ -131,4 +124,3 @@ snipp/
 ## Note on the backend
 
 The search and filter logic lives in a pure function called `filterSnippets()` in `server/snippets.js`. The same function is used by both the API and the unit tests, so the tests verify real behaviour.
-```
